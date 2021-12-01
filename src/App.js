@@ -9,9 +9,8 @@ function App() {
   let [answers, setAnswers] = useState({})
   return (
     <div className='app'>
-      {showComponent ? <Login name={userName}
-        setName={setUserName}
-        setShowComponent={setShowComponent} />
+      {showComponent
+        ? <Login name={userName} setName={setUserName} setShowComponent={setShowComponent} />
         : <Questionnery name={userName} answers={answers} setAnswers={setAnswers} />}
     </div>
   )
