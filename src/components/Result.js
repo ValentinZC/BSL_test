@@ -10,8 +10,23 @@ const Result = ({ name, answers }) => {
       <div>
          <h2>Result of user: {name}</h2>
          {
-            questValues.map((el, i) => {
-               return <div key={el[i]}>{el}: {ansValues[i]}</div>
+            ansValues.map((el, i) => {
+               if (typeof el === 'string') {
+                  return (
+                     <div>
+                        <h4>{questValues[i]}:</h4>
+                        <p>{el}</p>
+                     </div>
+                  )
+               }
+               if (Array.isArray(el)) {
+                  return (
+                     <div>
+                        <h4>{questValues[i]}</h4>
+                        {el.map(({ answer }) => <p>{answer}</p>)}
+                     </div>
+                  )
+               }
             })
          }
       </div>

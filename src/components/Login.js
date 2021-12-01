@@ -13,7 +13,7 @@ const Login = ({ name, setName, setShowComponent }) => {
    return (
       <>
          <div>
-            Please enter you'r name:
+            Please, enter you'r name:
          </div>
          <input className='input' type='text' onChange={setUserName}></input>
          <button className='button' onClick={() => handle()}>{data.nameStartButton}</button>
