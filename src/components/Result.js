@@ -15,7 +15,9 @@ const Result = ({ name, answers }) => {
                   return (
                      <div>
                         <h4>{questValues[i]}:</h4>
-                        <p>{el}</p>
+                        <ul>
+                           <li>{el}</li>
+                        </ul>
                      </div>
                   )
                }
@@ -23,7 +25,9 @@ const Result = ({ name, answers }) => {
                   return (
                      <div>
                         <h4>{questValues[i]}</h4>
-                        {el.map(({ answer }) => <p>{answer}</p>)}
+                        <ul>
+                           {el.map(({ answer }) => <li>{answer}</li>)}
+                        </ul>
                      </div>
                   )
                }

@@ -1,51 +1,14 @@
 import React, { useEffect, useState } from "react";
 import data from "../data/data";
 import Result from "./Result";
-import './../App.css'
+import './../App.css';
+import { renderRadioInput, renderCheckboxInput, renderTextInput } from './../helpers/renderInput'
 
-const renderRadioInput = (questionData, item, handleSingleValue) => {
-   return (
-      <div>
-         <input
-            key={questionData.id}
-            name={`${questionData.answerType}_${questionData.id}`}
-            type={questionData.answerType}
-            value={item.answer}
-            onChange={handleSingleValue} />
-         <label>{item.answer}</label>
-      </div>
-   )
-}
-
-const renderCheckboxInput = (questionData, item, handleMultiplyValue) => {
-   return (
-      <div>
-         <input
-            key={questionData.id}
-            name={`${questionData.answerType}_${questionData.id}`}
-            type={questionData.answerType}
-            value={item.answer}
-            onChange={e => handleMultiplyValue(e, item.id)} />
-         <label>{item.answer}</label>
-      </div>
-   )
-}
-
-const renderTextInput = (questionData, handleSingleValue) => {
-   return (
-      <div>
-         <input
-            key={questionData.id}
-            name={`${questionData.answerType}_${questionData.id}`}
-            onChange={handleSingleValue}
-            type={questionData.answerType} />
-      </div>
-   )
-}
 
 const Questionnery = ({ name, answers, setAnswers }) => {
    let [currentQuestion, setcurrentQuestion] = useState(0);
-   let [showResult, setShowResult] = useState(true)
+   let [showResult, setShowResult] = useState(true);
+
    const questionData = data.questions[currentQuestion];
    const questionLength = data.questions.length
 
@@ -76,9 +39,10 @@ const Questionnery = ({ name, answers, setAnswers }) => {
       }
    }, [currentQuestion])
 
-   let handleNextQuestion = (answers, type, id) => {
+   const handleNextQuestion = (answers, type, id) => {
+      console.log(type)
       const name = `${type}_${id}`;
-      if (type === 'radio' || type === 'text') {
+      if (type === 'radio') {
          if (answers[name] !== '') {
             setcurrentQuestion(currentQuestion + 1)
          } else {
@@ -93,6 +57,16 @@ const Questionnery = ({ name, answers, setAnswers }) => {
          } else {
             alert('Select variant')
          }
+         return
+      }
+
+      if (type === 'text') {
+         if (answers[name] !== '') {
+            handleShowRes()
+         } else {
+            alert('Write your city')
+         }
+         return
       }
    }
 
@@ -112,24 +86,24 @@ const Questionnery = ({ name, answers, setAnswers }) => {
 
    const handleMultiplyValue = (e, id) => {
       let value = e.target.value
-      let name = e.target.name // checkbox_3
+      let name = e.target.name
 
-      const newArray = answers[name]; // answers.checkbox_1 = [{...}]
+      const newArray = answers[name];
 
       if (!newArray.length) {
          newArray.push({ answer: value, id: id })
          setAnswers({
             ...answers,
-            [name]: newArray // [{...}]
+            [name]: newArray
          })
          return
       }
 
       if (newArray.length) {
-         const selectedCheck = newArray.filter(item => item.id === id); // [{...}]
+         const selectedCheck = newArray.filter(item => item.id === id);
 
          if (selectedCheck.length) {
-            let indexItem = newArray.indexOf(selectedCheck[0]) // index
+            let indexItem = newArray.indexOf(selectedCheck[0])
             newArray.splice(indexItem, 1);
             setAnswers({
                ...answers,
@@ -148,7 +122,6 @@ const Questionnery = ({ name, answers, setAnswers }) => {
       }
    }
 
-   console.log(answers)
    return (
       <>
          {showResult
@@ -166,7 +139,7 @@ const Questionnery = ({ name, answers, setAnswers }) => {
                </div>
                {currentQuestion < questionLength - 1
                   ? <button className='button' onClick={() => handleNextQuestion(answers, questionData.answerType, questionData.id)}>{data.nameNextButton}</button>
-                  : <button className='button' onClick={handleShowRes}>{data.nameFinishButton}</button>}
+                  : <button className='button' onClick={() => handleNextQuestion(answers, questionData.answerType, questionData.id)}>{data.nameFinishButton}</button>}
             </div>
             : <Result name={name} answers={answers} />
          }

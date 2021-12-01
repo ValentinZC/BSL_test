@@ -8,7 +8,7 @@ const Login = ({ name, setName, setShowComponent }) => {
       setName(e.target.value)
    }
 
-   let handle = () => name.trim().length !== 0 ? setShowComponent(false) : alert("Please, enter you'r name")
+   let handle = () => name.trim().length !== 0 ? setShowComponent(false) : alert("Please, enter your name")
 
    return (
       <>
